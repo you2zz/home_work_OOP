@@ -20,8 +20,7 @@ class Student:
         all_grades = []
         for _, g in grades.items():
             all_grades += g
-        average_grade= sum(all_grades) / len(all_grades) 
-        return round(average_grade, 1)
+        return round(sum(all_grades) / len(all_grades), 2)
     
     def __str__(self):
         courses_in_progress = ', '.join(self.courses_in_progress)
@@ -50,8 +49,7 @@ class Lecturer(Mentor):
         all_grades = []
         for _, g in grades.items():
             all_grades += g
-        average_grade= sum(all_grades) / len(all_grades) 
-        return round(average_grade, 1)
+        return round(sum(all_grades) / len(all_grades), 2)
 
     def __str__(self):
         res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.__average_grade(self.grades)}'  
@@ -76,6 +74,24 @@ class Reviewer(Mentor):
     def __str__(self):
         res = f'Имя: {self.name}\nФамилия: {self.surname}'  
         return res  
+
+
+
+def average_grade_on_course(list_students, course): # подсчет средней оценки за дз по всем студентам на курсе
+    all_list = []
+    for s in list_students:
+        for c, it in s.grades.items():
+            if c == course:
+                all_list += it
+    return round(sum(all_list) / len(all_list), 2)
+
+def average_grade_on_course(list_lecturers, course): # подсчет средней оценки за лекции всех лекторов на курсе
+    all_list = []
+    for s in list_lecturers:
+        for c, it in s.grades.items():
+            if c == course:
+                all_list += it
+    return round(sum(all_list) / len(all_list), 2)
 
 # Экземпляры классa Student:
 
@@ -117,7 +133,7 @@ helen_student.rate_hw(sirena_lecturer, 'Git - система контроля в
  
 # Ревьюверы оценивают студентов:
 
-dobrinya_reviewer.rate_hw(ivan_student, 'ООП и работа с API', 8)
+dobrinya_reviewer.rate_hw(ivan_student, 'ООП и работа с API', 10)
 dobrinya_reviewer.rate_hw(ivan_student, 'ООП и работа с API', 9)
 dobrinya_reviewer.rate_hw(helen_student, 'ООП и работа с API', 10)
 dobrinya_reviewer.rate_hw(helen_student, 'ООП и работа с API', 10)
@@ -142,3 +158,13 @@ print(sirena_lecturer)
 print()
 print(sirena_lecturer < bayan_lecturer, sirena_lecturer > bayan_lecturer)
 print()
+
+# Средние оценки за дз и лекции:
+
+all_students = [helen_student, ivan_student]
+course = 'ООП и работа с API'
+print(f'Средняя оценка за домашние задания по всем студентам в рамках курса {course}: {average_grade_on_course(all_students, course)}')
+
+all_students = [bayan_lecturer, sirena_lecturer]
+course = 'Git - система контроля версий'
+print(f'Средняя оценка за лекции всех лекторов в рамках курса {course}: {average_grade_on_course(all_students, course)}')
